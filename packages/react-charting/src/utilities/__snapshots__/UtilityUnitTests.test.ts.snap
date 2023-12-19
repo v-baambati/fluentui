@@ -3668,7 +3668,7 @@ exports[`createYAxisLabels should offset y-axis labels when layout direction is 
       <tspan
         dx="1em"
         id="LessLength"
-        x="15"
+        x="0"
       >
         Y-axis label 1
       </tspan>
@@ -3698,7 +3698,7 @@ exports[`createYAxisLabels should offset y-axis labels when layout direction is 
       <tspan
         dx="1em"
         id="LessLength"
-        x="15"
+        x="0"
       >
         Y-axis label 2
       </tspan>
@@ -3728,7 +3728,7 @@ exports[`createYAxisLabels should offset y-axis labels when layout direction is 
       <tspan
         dx="1em"
         id="LessLength"
-        x="15"
+        x="0"
       >
         Y-axis label 3
       </tspan>
