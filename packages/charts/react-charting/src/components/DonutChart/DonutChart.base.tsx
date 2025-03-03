@@ -129,7 +129,8 @@ export class DonutChartBase extends React.Component<IDonutChartProps, IDonutChar
     const outerRadius =
       Math.min(this.state._width! - donutMarginHorizontal, this.state._height! - donutMarginVertical) / 2;
     const chartData = this._elevateToMinimums(points.filter((d: IChartDataPoint) => d.data! >= 0));
-    const valueInsideDonut = this._valueInsideDonut(this.props.valueInsideDonut!, chartData!);
+    const valueInsideDonut =
+      this.props.innerRadius !== 0 ? this._valueInsideDonut(this.props.valueInsideDonut!, chartData!) : '';
     return !this._isChartEmpty() ? (
       <div
         className={this._classNames.root}
@@ -177,6 +178,7 @@ export class DonutChartBase extends React.Component<IDonutChartProps, IDonutChar
           hidden={!(!this.props.hideTooltip && this.state.showHover)}
           id={this._calloutId}
           onDismiss={this._closeCallout}
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           preventDismissOnLostFocus={true}
           /** Keep the callout updated with details of focused/hovered arc */
           shouldUpdateWhenHidden={true}

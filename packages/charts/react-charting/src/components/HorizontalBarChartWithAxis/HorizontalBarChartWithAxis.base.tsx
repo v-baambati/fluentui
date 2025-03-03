@@ -91,7 +91,9 @@ export class HorizontalBarChartWithAxisBase
       color: '',
       dataForHoverCard: 0,
       isCalloutVisible: false,
-      isLegendSelected: props.legendProps?.selectedLegend !== undefined,
+      isLegendSelected:
+        (props.legendProps?.selectedLegends && props.legendProps.selectedLegends.length > 0) ||
+        props.legendProps?.selectedLegend !== undefined,
       isLegendHovered: false,
       refSelected: null,
       selectedLegendTitle: props.legendProps?.selectedLegend ?? '',
@@ -100,7 +102,7 @@ export class HorizontalBarChartWithAxisBase
       activeXdataPoint: null,
       YValueHover: [],
       hoverXValue: '',
-      selectedLegends: [],
+      selectedLegends: props.legendProps?.selectedLegends || [],
     };
     this._calloutId = getId('callout');
     this._tooltipId = getId('HBCWATooltipID_');
@@ -605,7 +607,7 @@ export class HorizontalBarChartWithAxisBase
     const { useSingleColor = false } = this.props;
     const bars = this._points.map((point: IHorizontalBarChartWithAxisDataPoint, index: number) => {
       let shouldHighlight = true;
-      if (this._getHighlightedLegend().length > 0) {
+      if (this.state.isLegendHovered || this.state.isLegendSelected) {
         shouldHighlight = this._isLegendHighlighted(point.legend);
       }
       this._classNames = getClassNames(this.props.styles!, {
