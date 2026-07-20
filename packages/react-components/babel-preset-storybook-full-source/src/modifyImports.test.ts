@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as Babel from '@babel/core';
 import { modifyImportsPlugin as plugin, PLUGIN_NAME } from './modifyImports';
 import pluginTester from 'babel-plugin-tester';
 
@@ -24,5 +25,13 @@ describe(PLUGIN_NAME, () => {
     },
     pluginName: PLUGIN_NAME,
     plugin,
+  });
+
+  it('handles omitted import mappings', () => {
+    expect(() =>
+      Babel.transformSync("import { Button } from '@fluentui/react-button';", {
+        plugins: [[plugin, {}]],
+      }),
+    ).not.toThrow();
   });
 });

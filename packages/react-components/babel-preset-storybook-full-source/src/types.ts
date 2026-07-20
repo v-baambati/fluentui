@@ -16,7 +16,7 @@ interface CssModulesConfig {
 
 export interface BabelPluginOptions {
   /** Map of package names to their replacement config (used by `modifyImportsPlugin`). */
-  importMappings: Record<string, DependencyEntry>;
+  importMappings?: Record<string, DependencyEntry>;
 
   /**
    * When `true` (or a config object), the plugin will:
