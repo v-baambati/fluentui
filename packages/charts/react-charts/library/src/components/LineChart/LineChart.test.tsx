@@ -1074,3 +1074,75 @@ describe('LineChart - mouse events', () => {
     expect(screen.getByTestId('callout-action')).toBeInTheDocument();
   });
 });
+
+describe('LineChart - time zone behavior', () => {
+  it('uses UTC by default across the Canada 2026 daylight saving boundary', () => {
+    const originalTimezone = process.env.TZ;
+    process.env.TZ = 'America/Vancouver';
+
+    try {
+      const boundaryTickValues = [new Date('2026-11-01T08:30:00.000Z'), new Date('2026-11-01T09:30:00.000Z')];
+      const { container } = render(
+        <LineChart
+          culture="en-CA"
+          data={{
+            lineChartData: [
+              {
+                legend: 'Canada 2026',
+                data: boundaryTickValues.map((x, index) => ({ x, y: index })),
+              },
+            ],
+          }}
+          dateLocalizeOptions={{ hour: '2-digit', minute: '2-digit', hour12: false }}
+          tickValues={boundaryTickValues}
+        />,
+      );
+
+      const tickLabels = Array.from(
+        container.querySelectorAll('.fui-cart__xAxis .tick text'),
+        label => label.textContent,
+      );
+      expect(tickLabels).toEqual(['08:30', '09:30']);
+    } finally {
+      process.env.TZ = originalTimezone;
+    }
+  });
+
+  it('uses the runtime time zone when UTC is explicitly disabled', () => {
+    const originalTimezone = process.env.TZ;
+    process.env.TZ = 'America/Vancouver';
+
+    try {
+      const boundaryTickValues = [new Date('2026-11-01T08:30:00.000Z'), new Date('2026-11-01T09:30:00.000Z')];
+      const formatOptions: Intl.DateTimeFormatOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      };
+      const { container } = render(
+        <LineChart
+          culture="en-CA"
+          data={{
+            lineChartData: [
+              {
+                legend: 'Canada 2026',
+                data: boundaryTickValues.map((x, index) => ({ x, y: index })),
+              },
+            ],
+          }}
+          dateLocalizeOptions={formatOptions}
+          tickValues={boundaryTickValues}
+          useUTC={false}
+        />,
+      );
+
+      const tickLabels = Array.from(
+        container.querySelectorAll('.fui-cart__xAxis .tick text'),
+        label => label.textContent,
+      );
+      expect(tickLabels).toEqual(boundaryTickValues.map(date => date.toLocaleString('en-CA', formatOptions)));
+    } finally {
+      process.env.TZ = originalTimezone;
+    }
+  });
+});

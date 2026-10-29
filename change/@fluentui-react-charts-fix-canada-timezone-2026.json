@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Use UTC by default for LineChart date axes and callouts as documented.",
+  "packageName": "@fluentui/react-charts",
+  "email": "balakrishnabalakrishna@microsoft.com",
+  "dependentChangeType": "patch"
+}
